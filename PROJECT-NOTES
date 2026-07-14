@@ -1,0 +1,177 @@
+## Models
+######Entities - any object, person, concept, or event about which data is stored.*
+***
+
+### AdminUsers (Models/AdminUsers.cs)
+Represents an admin/guest account. Inherits from `IdentityUser<Guid>`, so username,
+email, and password hashing are handled by ASP.NET Identity — not custom fields.
+Maps to the `Users` table (renamed from `AdminUsers` via `.ToTable()` in
+ApplicationDbContext).
+
+- Adds: `CreatedAt`, `LastLogin`, and a 1—1 nav property to `Logs` (audit trail).
+- Role (Admin/Guest) is NOT a field on this class — it's handled separately via
+  Identity's `Roles`/`UserRoles` tables, seeded in `OnModelCreating` and checked with
+  `[Authorize(Roles = "Admin")]`.
+- Default admin seeded in `Program.cs` (admin@example.com / Admin123! — change before
+  deploying, it's currently in plain text).
+
+### AskAQuestionEmails (Models/AskAQuestionEmails.cs)
+A contact-form submission — just `Email` and `isActive` (likely a subscribe/unsubscribe
+flag rather than a full message form).
+
+**Status: modeled but unused.** Natural fit for wiring up the currently-empty
+Contact Us page.
+
+### Classes (Models/Classes.cs)
+A language class/course being offered (e.g. "Beginner Chinese"). Bilingual title +
+description, `StartDate`, `CreatedAt`/`UpdatedAt`. Has two nav collections:
+`Schedules` (→ `ClassSchedule`) and `Signups` (→ `ClassSignups`).
+
+**Status:** admin Create/Overview exist. Public page is an empty shell — `Index()`
+returns a view with no data pulled from this table yet.
+
+### ClassSchedule (Models/ClassSchedule.cs)
+A recurring time slot for a `Classes` entry — `DayOfWeek`, `StartTime`, `EndTime`
+(both `TimeOnly`). FK `ClassId` → `Classes`. Lets one class have multiple weekly
+sessions (e.g. Tue/Thu 6–7pm).
+
+**Status: modeled but unused** — no controller reads/writes this yet.
+
+### ClassSignups (Models/ClassSignups.cs)
+A registration form submission for a class — `Name`, `Age`, `Email`, `Phone`,
+`ClassType`, `HSKLevel` (Chinese proficiency test level), `CreatedAt`. FK `ClassId` →
+`Classes`. This is what a visitor fills in on the public Classes page to sign up.
+
+**Status: modeled but unused** — no controller reads/writes this yet. This is the
+natural companion piece to building out the public Classes page.
+
+### ErrorViewModel (Models/ErrorViewModel.cs)
+Framework boilerplate, not app data — carries a `RequestId` for the default error page
+(`Views/Shared/Error.cshtml`). No DB table, not part of the schema. Leave as-is.
+
+### Event (Models/Event.cs)
+A one-off event (talk, festival, screening, etc.). Bilingual title/description,
+`Photographer`/`Author`/`Translator` credit fields, `Status` ("Draft" by default —
+implies a draft/published workflow), `Tickets` (string flag, default "NoTickets"),
+`DateOfEvent`, `Deadline` (signup cutoff), timestamps. No FKs — Images attach to it via
+the polymorphic `Image.ItemType="Event"` pattern instead of a real relation.
+
+**Status: your most complete feature.** Public Index + full admin
+Create/Edit/Overview/Delete + image upload/delete.
+
+### Image (Models/Image.cs)
+A single uploaded image — `FilePath`, bilingual `AltText`, `SortOrder`, `CreatedAt`.
+Polymorphic association via `ItemType` (string, e.g. "Event", "PageSection") +
+`ItemId` (int) instead of a real foreign key, so one table serves images for multiple
+entity types. Trade-off: flexible, but EF can't validate or eager-load the link — a
+dangling `ItemId` pointing at a deleted row is possible. Fine for now; consider real
+per-entity FKs if you have time before the deadline.
+
+### Logs (Models/Logs.cs)
+Audit trail entry. One row per tracked action (create/edit/delete etc.) — `Action`,
+`EntityType`, `EntityId`, `Description`, `CreatedAt`. Optional FK `UserId` → `AdminUser`
+(nullable, so a log entry can exist without a user attached, e.g. system events).
+1—1 with `AdminUser` as configured in `OnModelCreating`.
+
+**Status: modeled but unused** — nothing in the controllers currently writes to this
+table. Not required to demo a working site; add later as polish if time allows.
+
+### NavigationList (Models/NavigationList.cs)
+A navigation menu entry — `Type`, bilingual `Label`, `Position`, `IsVisible`. Optional
+FK `PageId` → `Pages` (nullable, so a nav item doesn't strictly need to point at a
+CMS page — could link elsewhere, e.g. to `/Events`).
+
+**Status: modeled but unused.** Your site nav is presumably hardcoded in
+`Views/Shared/_Layout.cshtml` right now instead of driven by this table.
+
+### News (Models/News.cs)
+Same shape as `Event` but for news posts — bilingual title/description, `Status`,
+optional `Tickets`, `ValidUntil` instead of a deadline, timestamps. Also no FK; also
+uses the polymorphic Image pattern if it has images.
+
+**Status:** public Index + admin Create/Overview exist. **No admin Edit action yet** —
+smallest gap to close, same pattern as Events' Edit.
+
+### Pages (Models/Page.cs)
+A dynamic content page in the (unfinished) CMS system — bilingual menu label + title,
+`Slugs` (URL path), `IsVisible`, `SortOrder`, timestamps. Nav collections: `Sections`
+(→ `PageSections`) and `NavigationItems` (→ `NavigationList`).
+
+**Status: stub.** `Areas/Admin/Controllers/PagesController` only has an empty
+`Index()`. This is the biggest unfinished piece — likely what would drive the Team
+page and any other static content, but not required for a basic working demo.
+
+### PageSections (Models/PageSections.cs)
+A block of content within a `Pages` entry — `SectionType` (e.g. "text", "gallery" —
+exact types not yet defined anywhere), bilingual description, `SortOrder`. FK `PageId`
+→ `Pages`. Lets one page be built from multiple ordered content blocks.
+
+**Status: modeled but unused**, part of the same unfinished CMS system as `Pages`.
+
+### Settings (Models/Settings.cs)
+Singleton-style table (expected to hold one row) for homepage content — contact
+address/phone, a cover image, and three bilingual image+paragraph pairs for the
+homepage sections.
+
+**Status: modeled but unused** — `Views/Home/Index.cshtml` is presumably hardcoded
+right now instead of reading from this table. Self-contained, no dependencies on
+other unfinished features — good candidate to build next.
+
+***
+
+## Controllers reference
+
+### Public (Controllers/)
+
+**HomeController**
+- `Index()`
+- `Privacy()`
+- `Error()`
+
+**AccountController** 
+- `Login()` — GET, shows the login form
+- `Login(LoginViewModel model, string CaptchaInput, string? returnUrl = null)` — POST
+- `Logout()` — async
+- `CaptchaImage()`
+- `Index()`
+
+**ClassesController**
+- `Index()` — currently returns an empty view, no data
+
+**ContactUsController**
+- `Index()` — currently returns an empty view, no data
+
+**EventsController**
+- `Index()`
+
+**NewsController**
+- `Index()`
+
+**TeamController**
+- `Index()`
+
+### Admin area (Areas/Admin/Controllers/)
+
+**AdminController**
+- `Dashboard()`
+
+**ClassesController**
+- `CreateClass()`
+- `Overview()`
+
+**EventsController** — most complete controller in the project
+- `Create()` — GET
+- `Create([FromForm] EventsEdit vm, [FromForm] List<IFormFile> Images)` — POST
+- `Overview()`
+- `Edit(int id)` — GET
+- `Edit(EventsEdit vm, [FromForm] List<IFormFile> Images)` — POST
+- `DeleteImage(int id)`
+- `Delete(int id)`
+
+**NewsController**
+- `CreateNews()`
+- `Overview()`
+- *(no Edit action yet — see Feature status table above)*
+
+**PagesController**
+- `Index()` — CMS stub, returns an empty view
