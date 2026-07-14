@@ -1,0 +1,32 @@
+﻿@using ConfuciusWebsite.ViewModels.EventViewModels
+<!--This view expects a ViewModel of type EventsEdit.-->
+@model EventsEdit
+@{
+    ViewData["Title"] = "Edit Event";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">Edit Event</h2>
+<form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-3">
+    @Html.AntiForgeryToken()
+    @if (ViewBag.FileTooLarge == true)
+    {
+        <div class="alert alert-danger">
+            The uploaded file is too large. Please upload images under 30 MB.
+        </div>
+    }
+    @await Html.PartialAsync("_EventForm", Model)
+</form>
+
+@section Scripts {
+    <script type="module">
+        import { initImageUploader } from '/js/imageUploader.js';
+        initImageUploader({
+            dropzoneId: "dropzone",
+            fileInputId: "fileInput",
+            previewId: "preview",
+            formSelector: "form",
+            deleteUrlBase: "/Admin/Events/DeleteImage"
+        });
+    </script>
+}

@@ -1,0 +1,78 @@
+﻿<!--NEWS CREATE/EDIT TEMPLATE-->
+@using ConfuciusWebsite.ViewModels.EventViewModels
+@model EventsEdit
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="col-md-6">
+        <label asp-for="Title_BG" class="form-label"></label>
+        <input asp-for="Title_BG" class="form-control"/>
+        <span asp-validation-for="Title_BG" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Title_EN" class="form-label"></label>
+        <input asp-for="Title_EN" class="form-control"/>
+        <span asp-validation-for="Title_EN" class="text-danger"></span>
+    </div>
+
+     <div class="col-12">
+            <label asp-for="Description_BG" class="form-label"></label>
+            <textarea asp-for="Description_BG" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description_BG" class="text-danger"></span>
+        </div>
+
+        <div class="col-12">
+            <label asp-for="Description_EN" class="form-label"></label>
+            <textarea asp-for="Description_EN" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Description_EN" class="text-danger"></span>
+        </div>
+        <!--DROP MENU FOR IMAGES-->
+        @await Html.PartialAsync("_ImageUploader", Model.AvailableImages)
+
+        
+
+
+        <div class="col-md-4">
+            <label asp-for="Photographer" class="form-label"></label>
+            <input asp-for="Photographer" class="form-control" />
+            <span asp-validation-for="Photographer" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Author" class="form-label"></label>
+            <input asp-for="Author" class="form-control" />
+            <span asp-validation-for="Author" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Translator" class="form-label"></label>
+            <input asp-for="Translator" class="form-control" />
+            <span asp-validation-for="Translator" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Status" class="form-label"></label>
+            <select asp-for="Status" class="form-select">
+                <option value="Draft">Draft</option>
+                <option value="Published">Published</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="DateOfEvent" class="form-label"></label>
+            <input asp-for="DateOfEvent" type="date" class="form-control" />
+            <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary">Publish</button>
+            <a asp-action="Overview" class="btn btn-secondary ms-2">Cancel</a>
+        </div>
+
+
+<!--This is a partial view. It CANNOT contain script -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Events Overview";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h1 class="text-center mb-4">Events</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+    <div class="d-flex justify-content-start mb-3">
+        <a class="btn btn-primary" href="@Url.Action("Create", "Events", new { area = "Admin" })">
+            + Add Event
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Title (BG)</th>
+                <th>Title (ENG)</th>
+                <th>Date</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th style="width: 180px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Events)
+            {
+                <tr>
+                    <td>@item.Title_BG</td>
+                    <td>@item.Title_EN</td>
+                    <td>@item.DateOfEvent</td>
+                    <td>@item.Deadline</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" href="@Url.Action("Edit", "Events", new { id = item.Id, area = "Admin" })">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this event?');">
+                                Delete
+                            </button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+

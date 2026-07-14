@@ -1,0 +1,65 @@
+﻿@model ConfuciusWebsite.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-6 py-4 px-4 d-flex flex-column justify-content-center" style="background-color: #4F6D7A;">
+            <h3 class="mb-2 text-center fw-bold" style="color: white">Sign in</h3>
+
+            <!-- Info Message-->
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show mb-3 small text-center" role="alert">
+                    @ViewBag.Message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!--Global Error Box-->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show small text-center" role="alert">
+                    <strong>Please fix the errors below and try again:</strong>
+                    <ul class="mb-0 mt-2">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!--Login Form-->
+            <form asp-action="Login" method="post" novalidate>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold" style="color: white"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter your Email Address" autocomplete="username" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold" style="color: white"></label>
+                    <input asp-for="Password" class="form-control" type="password" placeholder="Enter Your Password" autocomplete="current-password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+                <!--Custom CAPTCHA-->
+                <div class="mb-3">
+                    <img src="/Account/CaptchaImage" alt="Captcha" class="mb-2" />
+                    <input type="text" name="CaptchaInput" class="form-control" placeholder="Enter the code above" />
+                </div>
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label small" style="color: white"></label>
+                </div>
+                <button type="submit" class="btn w-100 fw-semibold py-2 mb-2" style="background-color: #FFFC00">Sign In</button>
+            </form>
+        </div>
+</div>
+
+<!--These enable client-side validation for your form-->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

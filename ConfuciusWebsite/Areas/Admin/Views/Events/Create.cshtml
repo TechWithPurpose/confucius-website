@@ -1,0 +1,24 @@
+﻿@using ConfuciusWebsite.ViewModels.EventViewModels
+@model EventsEdit
+@{
+    ViewData["Title"] = "Create Event";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="mb-4">Create Event</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+    @Html.AntiForgeryToken()
+    @await Html.PartialAsync("_EventForm", Model)
+</form>
+@section Scripts {
+    <script type="module">
+        import { initImageUploader } from '/js/imageUploader.js';
+        initImageUploader({
+            dropzoneId: "dropzone",
+            fileInputId: "fileInput",
+            previewId: "preview",
+            formSelector: "form"
+        });
+    </script>
+}

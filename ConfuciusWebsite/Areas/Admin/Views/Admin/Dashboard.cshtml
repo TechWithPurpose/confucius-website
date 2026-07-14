@@ -1,0 +1,55 @@
+﻿@model ConfuciusWebsite.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+     <!-- SECTION 1: New sign-ups -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">New sign-ups for classes</h5>
+
+            <!-- Grey meta info -->
+            <small class="text-muted">
+                Contact email: contact@example.com • Last login: 2026-01-07 09:28
+            </small>
+        </div>
+
+        <div class="card-body">
+            <!--Model.NewSignUpsCount-->
+            <h3 class="display-6 fw-bold"></h3>
+            <p class="text-muted mb-0">students registered recently</p>
+        </div>
+    </div>
+
+
+    <!-- SECTION 2: Recent activity -->
+    <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Recent activity</h5>
+            </div>
+
+            <div class="card-body">
+                    <p class="text-muted">No recent activity.</p>
+            </div>
+        </div>
+
+
+        <!-- SECTION 3: Drafts waiting to be published -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Drafts waiting to be published</h5>
+            </div>
+
+            <div class="card-body">         
+                    <p class="text-muted">No drafts available.</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
