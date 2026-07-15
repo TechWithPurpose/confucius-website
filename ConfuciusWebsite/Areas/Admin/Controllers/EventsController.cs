@@ -53,6 +53,11 @@ namespace ConfuciusWebsite.Areas.Admin.Controllers
                 return View("Create", new EventsEdit());
             }
 
+            if (!ModelState.IsValid)
+            {
+                return View("Create", vm);
+            }
+
             if (Images == null)
             {
                 Images = new List<IFormFile>(); // avoid null later

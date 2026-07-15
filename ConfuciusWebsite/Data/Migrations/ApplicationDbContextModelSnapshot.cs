@@ -411,6 +411,10 @@ namespace ConfuciusWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Tickets")
                         .HasColumnType("nvarchar(max)");
 
