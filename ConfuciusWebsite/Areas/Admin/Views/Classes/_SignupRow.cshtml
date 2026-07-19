@@ -1,0 +1,37 @@
+﻿@using ConfuciusWebsite.Models
+@model ClassSignups
+
+<tr data-id="@Model.Id">
+    <td>
+        <input type="checkbox" class="form-check-input contacted-checkbox" data-id="@Model.Id" @(Model.Contacted ? "checked" : "") />
+    </td>
+    <td>@Model.ClassType</td>
+    <td>@Model.Name</td>
+    <td>@Model.CreatedAt.ToString("dd MMM yyyy")</td>
+    <td>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="collapse" data-bs-target="#details-@Model.Id">
+            Details
+        </button>
+        <button type="button" class="btn btn-sm btn-danger delete-signup-btn" data-id="@Model.Id">
+            Delete
+        </button>
+    </td>
+</tr>
+<tr class="details-row" id="details-row-@Model.Id">
+    <td colspan="5" class="p-0 border-0">
+        <div class="collapse" id="details-@Model.Id">
+            <div class="card card-body m-2">
+                <p class="mb-1"><strong>Full Name:</strong> @Model.Name</p>
+                <p class="mb-1"><strong>Age:</strong> @Model.Age</p>
+                <p class="mb-1"><strong>Email:</strong> @Model.Email</p>
+                <p class="mb-1"><strong>Phone:</strong> @(string.IsNullOrEmpty(Model.Phone) ? "-" : Model.Phone)</p>
+                <p class="mb-1"><strong>Class:</strong> @(Model.Class != null ? $"{Model.Class.Title_BG} / {Model.Class.Title_EN}" : "-")</p>
+                @if (!string.IsNullOrEmpty(Model.HSKLevel))
+                {
+                    <p class="mb-1"><strong>HSK Level:</strong> @Model.HSKLevel</p>
+                }
+                <p class="mb-0"><strong>Submitted:</strong> @Model.CreatedAt.ToString("dd MMM yyyy, HH:mm")</p>
+            </div>
+        </div>
+    </td>
+</tr>

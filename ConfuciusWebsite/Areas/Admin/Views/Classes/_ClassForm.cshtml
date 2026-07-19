@@ -1,0 +1,124 @@
+﻿<!--CLASS CREATE/EDIT FORM TEMPLATE-->
+@using ConfuciusWebsite.ViewModels.ClassViewModels
+@model ClassEdit
+
+<input type="hidden" asp-for="Id" />
+
+<div class="col-md-6">
+    <label asp-for="Title_BG" class="form-label"></label>
+    <input asp-for="Title_BG" class="form-control" />
+    <span asp-validation-for="Title_BG" class="text-danger"></span>
+</div>
+
+<div class="col-md-6">
+    <label asp-for="Title_EN" class="form-label"></label>
+    <input asp-for="Title_EN" class="form-control" />
+    <span asp-validation-for="Title_EN" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="Description_BG" class="form-label"></label>
+    <textarea asp-for="Description_BG" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description_BG" class="text-danger"></span>
+</div>
+
+<div class="col-12">
+    <label asp-for="Description_EN" class="form-label"></label>
+    <textarea asp-for="Description_EN" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description_EN" class="text-danger"></span>
+</div>
+
+<div class="col-md-4">
+    <label asp-for="StartDate" class="form-label">Start Date</label>
+    <input asp-for="StartDate" type="date" class="form-control" />
+    <span asp-validation-for="StartDate" class="text-danger"></span>
+</div>
+
+<!--DROP MENU FOR IMAGES-->
+@await Html.PartialAsync("_ImageUploader", Model.AvailableImages)
+
+<!--WEEKLY SCHEDULE EDITOR-->
+<div class="col-12 mt-4">
+    <h5>Weekly Schedule</h5>
+    <div id="schedule-list">
+        @for (int i = 0; i < Model.Schedules.Count; i++)
+        {
+            <div class="row g-2 mb-2 schedule-row align-items-end">
+                <input type="hidden" name="Schedules[@i].Id" class="schedule-id-input" value="@Model.Schedules[i].Id" />
+                <div class="col-md-4">
+                    <label class="form-label">Day</label>
+                    <select name="Schedules[@i].DayOfWeek" class="form-select schedule-day-select">
+                        @foreach (var day in new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })
+                        {
+                            if (day == Model.Schedules[i].DayOfWeek)
+                            {
+                                <option value="@day" selected>@day</option>
+                            }
+                            else
+                            {
+                                <option value="@day">@day</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Start Time</label>
+                    <input type="time" name="Schedules[@i].StartTime" class="form-control schedule-start-input"
+                           value="@(Model.Schedules[i].StartTime.ToString("HH:mm"))" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">End Time</label>
+                    <input type="time" name="Schedules[@i].EndTime" class="form-control schedule-end-input"
+                           value="@(Model.Schedules[i].EndTime.ToString("HH:mm"))" />
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger remove-schedule-row w-100">Remove</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <button type="button" id="add-schedule-row" class="btn btn-outline-secondary btn-sm mt-2">
+        + Add schedule slot
+    </button>
+
+    <!-- Template used by JS to add new rows; not submitted since it's outside the form's tab order but IS inside the form tag, so give it no "name" attributes until cloned -->
+    <template id="schedule-row-template">
+        <div class="row g-2 mb-2 schedule-row align-items-end">
+            <input type="hidden" class="schedule-id-input" value="0" />
+            <div class="col-md-4">
+                <label class="form-label">Day</label>
+                <select class="form-select schedule-day-select">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Start Time</label>
+                <input type="time" class="form-control schedule-start-input" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">End Time</label>
+                <input type="time" class="form-control schedule-end-input" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger remove-schedule-row w-100">Remove</button>
+            </div>
+        </div>
+    </template>
+</div>
+
+<div class="col-12 mt-4">
+    <button type="submit" class="btn btn-primary">Publish</button>
+    <a asp-action="Overview" class="btn btn-secondary ms-2">Cancel</a>
+</div>
+
+<!--This is a partial view. It CANNOT contain script -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

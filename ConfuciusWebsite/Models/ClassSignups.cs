@@ -20,5 +20,6 @@ namespace ConfuciusWebsite.Models
         public string ClassType { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public string? HSKLevel { get; set; }
+        public bool Contacted { get; set; } = false;
     }
 }

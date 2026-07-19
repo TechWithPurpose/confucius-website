@@ -1,5 +1,105 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ConfuciusWebsite.ViewModels.ClassViewModels
+@using ConfuciusWebsite.Models
+@model ClassesOverviewViewModel
 @{
+    ViewData["Title"] = "Classes Overview";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h1 class="text-center mb-4">Classes</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-start mb-3">
+        <a class="btn btn-primary" href="@Url.Action("CreateClass", "Classes", new { area = "Admin" })">
+            + Add Class
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Title (BG)</th>
+                <th>Title (ENG)</th>
+                <th>Start Date</th>
+                <th style="width: 180px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Classes)
+            {
+                <tr>
+                    <td>@item.Title_BG</td>
+                    <td>@item.Title_EN</td>
+                    <td>@item.StartDate</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" href="@Url.Action("Edit", "Classes", new { id = item.Id, area = "Admin" })">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this class? This will also remove its schedule and any signup requests tied to it.');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h2 class="mt-5 mb-3">New Requests</h2>
+    <table class="table table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 100px;">Contacted</th>
+                <th>Class Type</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th style="width: 160px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="new-requests-body">
+            @foreach (var signup in Model.NewRequests)
+            {
+                @await Html.PartialAsync("_SignupRow", signup)
+            }
+        </tbody>
+    </table>
+    <p id="new-requests-empty" class="text-muted" style="@(Model.NewRequests.Any() ? "display:none;" : "")">
+        No new requests right now.
+    </p>
+
+    <h2 class="mt-5 mb-3">Old Requests</h2>
+    <table class="table table-striped align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 100px;">Contacted</th>
+                <th>Class Type</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th style="width: 160px;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="old-requests-body">
+            @foreach (var signup in Model.OldRequests)
+            {
+                @await Html.PartialAsync("_SignupRow", signup)
+            }
+        </tbody>
+    </table>
+    <p id="old-requests-empty" class="text-muted" style="@(Model.OldRequests.Any() ? "display:none;" : "")">
+        No old requests yet.
+    </p>
+
+</div>
+
+@section Scripts {
+    <script src="~/js/classSignups.js" asp-append-version="true"></script>
 }
