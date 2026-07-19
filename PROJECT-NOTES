@@ -175,3 +175,16 @@ other unfinished features — good candidate to build next.
 
 **PagesController**
 - `Index()` — CMS stub, returns an empty view
+
+
+## Sidenotes:
+**TO-DO**
+- Add the Preview button for posts from the Admin side.
+
+- Idea: Admin side -> one colour pallette; user side -> the opposite colour pallette
+- Idea: Make it so while the admin fills in info - it autosaves at each new change as a draft
+
+~ There's no UI for adding other admin accounts
+~ The News table in the database has 2 additional columns - Tickets & ValidUntil
+
+*Good to know - Events section the Author, Photographer, Translator input fields accept both EN and BG languages.
