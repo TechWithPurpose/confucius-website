@@ -1,0 +1,93 @@
+﻿@using ConfuciusWebsite.ViewModels.PageViewModels
+@model PagesOverviewViewModel
+@{
+    ViewData["Title"] = "Pages Overview";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+
+    <h1 class="text-center mb-4">Pages</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-start mb-3">
+        <a class="btn btn-primary" href="@Url.Action("CreatePage", "Pages", new { area = "Admin" })">
+            + Add Page
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Title (BG)</th>
+                <th>Title (ENG)</th>
+                <th>Status</th>
+                <th style="width: 180px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Pages)
+            {
+                <tr>
+                    <td>@item.Title_BG</td>
+                    <td>@item.Title_EN</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <a class="btn btn-sm btn-secondary" href="@Url.Action("Edit", "Pages", new { id = item.Id, area = "Admin" })">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Are you sure you want to delete this page?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h2 class="mt-5 mb-3">Navigation Menu</h2>
+    <p class="text-muted">Drag items to reorder how they appear in the site's navigation.</p>
+
+    @if (!Model.NavigationItems.Any())
+    {
+        <p class="text-muted fst-italic">No navigation items yet.</p>
+    }
+    else
+    {
+        <ul id="nav-order-list" class="list-group mb-3" style="max-width: 500px;">
+            @foreach (var item in Model.NavigationItems)
+            {
+                <li class="list-group-item d-flex align-items-center" draggable="true" data-id="@item.Id">
+                    <span class="me-2 text-muted" aria-hidden="true">&#9776;</span>
+                    <span>@item.Label_EN</span>
+                </li>
+            }
+        </ul>
+
+        <button id="save-order-btn" type="button" class="btn btn-primary">Save order</button>
+        <span id="save-order-status" class="ms-2 text-success" style="display:none;">Saved!</span>
+    }
+
+</div>
+
+<style>
+    #nav-order-list li {
+        cursor: grab;
+    }
+
+        #nav-order-list li.dragging {
+            opacity: 0.5;
+        }
+</style>
+
+@section Scripts {
+    <script src="~/js/navOrder.js" asp-append-version="true"></script>
+}

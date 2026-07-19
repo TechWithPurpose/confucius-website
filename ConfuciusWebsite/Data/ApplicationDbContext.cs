@@ -44,6 +44,11 @@ namespace ConfuciusWebsite.Data
             builder.Entity<ClassSignups>()
                 .Property(s => s.Contacted)
                 .HasDefaultValue(false);
+
+            // Same idea for Pages.Status
+            builder.Entity<Pages>()
+                .Property(p => p.Status)
+                .HasDefaultValue("Draft");
         }
         // This is what tells EF Core:
         //“These tables exist.Please track them.”

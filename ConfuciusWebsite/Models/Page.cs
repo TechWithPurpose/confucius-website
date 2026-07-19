@@ -16,12 +16,13 @@ namespace ConfuciusWebsite.Models
         [Required]
         public string Title_EN { get; set; } = null!;
         public string Slugs { get; set; } = null!;
+        public string Status { get; set; } = "Draft";
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
         public int SortOrder { get; set; }
 
-       // Navigation property (one page → many sections)
+        // Navigation property (one page → many sections)
         public List<PageSections> Sections { get; set; }
         public List<NavigationList> NavigationItems { get; set; }
     }
