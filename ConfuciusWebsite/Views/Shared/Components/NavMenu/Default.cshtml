@@ -1,0 +1,9 @@
+﻿@using ConfuciusWebsite.ViewComponents
+@model List<NavMenuItem>
+
+@foreach (var item in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link" href="@item.Url">@item.Label</a>
+    </li>
+}

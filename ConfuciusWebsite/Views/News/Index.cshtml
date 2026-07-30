@@ -1,5 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ConfuciusWebsite.ViewModels.NewsViewModels
+@model NewsPublicViewModel
 @{
+    ViewData["Title"] = Model.IsEnglish ? "Upcoming Activities" : "Предстоящи дейности";
 }
+
+<div class="container my-5">
+
+    <h1 class="text-center mb-5">
+        @(Model.IsEnglish ? "Upcoming Activities" : "Предстоящи дейности")
+    </h1>
+
+    @if (!Model.Items.Any())
+    {
+        <p class="text-center text-muted">
+            @(Model.IsEnglish ? "No news at the moment." : "Няма новини в момента.")
+        </p>
+    }
+
+    @for (int i = 0; i < Model.Items.Count; i++)
+    {
+        var item = Model.Items[i];
+
+        <article class="mb-4">
+            @if (!string.IsNullOrEmpty(item.ImagePath))
+            {
+                <div class="text-center mb-3">
+                    <img src="@item.ImagePath" alt="@item.Title" class="img-fluid rounded"
+                         style="max-width: 500px; width: 100%;" />
+                </div>
+            }
+
+            <h3 class="text-center">@item.Title</h3>
+            <p class="text-center">@item.Description</p>
+
+            @if (item.ValidUntil.HasValue)
+            {
+                <div class="text-start text-muted small">
+                    @(Model.IsEnglish ? "Valid until" : "Валидно до") @item.ValidUntil.Value.ToString("dd MMM yyyy")
+                </div>
+            }
+        </article>
+
+        @if (i < Model.Items.Count - 1)
+        {
+            <hr class="my-5" />
+        }
+    }
+
+</div>

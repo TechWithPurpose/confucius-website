@@ -76,7 +76,11 @@ export function initImageUploader(options) {
     }
 
     // Ensure server receives selected files
-    document.querySelector(formSelector).addEventListener("submit", () => {
+    // Use the form that actually contains this file input, not just "the first
+    // <form> on the page" - admin pages also have a Logout form in the navbar
+    // that a plain querySelector('form') would match instead.
+    const ownerForm = fileInput.closest("form") || document.querySelector(formSelector);
+    ownerForm.addEventListener("submit", () => {
         const dt = new DataTransfer();
         selectedFiles.forEach(file => dt.items.add(file));
         fileInput.files = dt.files;

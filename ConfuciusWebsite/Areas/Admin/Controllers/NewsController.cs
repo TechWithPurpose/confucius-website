@@ -34,6 +34,7 @@ namespace ConfuciusWebsite.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult CreateNews([FromForm] NewsEdit vm, [FromForm] List<IFormFile> Images)
         {
+
             if (vm == null)
             {
                 ModelState.AddModelError("", "Invalid form submission.");
@@ -44,7 +45,6 @@ namespace ConfuciusWebsite.Areas.Admin.Controllers
             {
                 return View("CreateNews", vm);
             }
-
 
             if (Images == null)
             {
@@ -164,15 +164,22 @@ namespace ConfuciusWebsite.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(NewsEdit vm, [FromForm] List<IFormFile> Images)
         {
-            if (Images == null)
-            {
-                Images = new List<IFormFile>();
-            }
-
             var newsToSave = _context.News.FirstOrDefault(n => n.Id == vm.Id);
             if (newsToSave == null)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                vm.AvailableImages = _imageService.GetImages("News", vm.Id);
+                ModelState.Clear();
+                return View("Edit", vm);
+            }
+
+            if (Images == null)
+            {
+                Images = new List<IFormFile>();
             }
 
             bool changed =
