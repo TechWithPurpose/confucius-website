@@ -52,9 +52,11 @@ The user roles include:
 * Visitor/User
 * Administrator
 
-The complete collection of user stories can be found in:
+## 📋 User Stories
 
-📄 **[Link to User Stories PDF]**
+The functional requirements for the system were initially defined using user stories.
+
+![View the complete User Stories document](https://github.com/TechWithPurpose/confucius-website/blob/c8c34fe189573ca36f37a474b298d6cb77e4909a/docs/Confucius%20website%20-%20User%20Stories.png)
 
 ### Wireframes
 
@@ -70,9 +72,14 @@ These included designs for:
 * [Admin Dashboard]
 * [Other pages]
 
-Wireframes:
+Some of the wireframes:
 
-📄 **[Link to Wireframes / PDF / Images]**
+![Example wireframe#1](https://github.com/TechWithPurpose/confucius-website/blob/91dfd2fff2ab0a48ef7d48a93eb01151fe7a1d35/screenshots/WireFrames%20(5).png)
+![Example wireframe#2](https://github.com/TechWithPurpose/confucius-website/blob/91dfd2fff2ab0a48ef7d48a93eb01151fe7a1d35/screenshots/WireFrames%20(4).png)
+![Example wireframe#3](https://github.com/TechWithPurpose/confucius-website/blob/91dfd2fff2ab0a48ef7d48a93eb01151fe7a1d35/screenshots/WireFrames%20(16).png)
+![Example wireframe#4](https://github.com/TechWithPurpose/confucius-website/blob/91dfd2fff2ab0a48ef7d48a93eb01151fe7a1d35/screenshots/WireFrames%20(15).png)
+
+📄 **[(Link to all of the Wireframes)]**(https://github.com/TechWithPurpose/confucius-website/tree/c8c34fe189573ca36f37a474b298d6cb77e4909a/docs/wireframes)  
 
 ## 🗄️ Database Design
 
@@ -80,26 +87,18 @@ The database was designed and implemented using Microsoft SQL Server.
 
 The database schema was created to support the planned functionality of the application, including the management of [users / events / news / courses / other entities].
 
-### Database Architecture
+![Database Schema](https://github.com/TechWithPurpose/confucius-website/blob/91dfd2fff2ab0a48ef7d48a93eb01151fe7a1d35/docs/database-schema.png )
 
-Below is the database schema developed for the project:
 
-![Database Schema](path-to-image)
-
-Alternatively, the complete database diagram can be found here:
-
-📄 **[Link to database schema]**
 
 ### Main Entities
 
 The database includes entities such as:
 
-* `[Entity Name]`
-* `[Entity Name]`
-* `[Entity Name]`
-* `[Entity Name]`
-
-> Update this section with the actual tables from your database.
+* `Users`
+* `Events`
+* `Images`
+* `ClassSchedule`
 
 ## 💻 Implemented Functionality
 
@@ -123,8 +122,6 @@ Implemented or partially implemented functionality includes:
 * [ ] Upload/manage images
 * [ ] Other functionality
 
-> Replace the items above with the functionality that actually works.
-
 ### Public/User Area
 
 The public-facing side of the website was planned but remains incomplete.
@@ -136,44 +133,59 @@ Planned functionality included:
 * [ ] Viewing upcoming events
 * [ ] Accessing information about courses and activities
 * [ ] Contact information
-* [ ] [Other planned functionality]
+* [ ] Signing up for classes
 
 ## 📸 Screenshots
 
 ### Administration Panel
 
-#### [Feature/Page Name]
+#### [Admin Dashboard]
 
-![Screenshot](path-to-screenshot)
+![Screenshot](https://github.com/TechWithPurpose/confucius-website/blob/65d8b6a5fd664ee5d112a1031ae20668701d777b/screenshots/Screenshot%202026-08-20%20105103.png)
 
-**Description:** Briefly explain what this page or feature does.
+**Description:** Displays the most recent activity updates.
 
 ---
 
-#### [Feature/Page Name]
+#### [News Dashboard]
 
-![Screenshot](path-to-screenshot)
+![Screenshot](https://github.com/TechWithPurpose/confucius-website/blob/65d8b6a5fd664ee5d112a1031ae20668701d777b/screenshots/Screenshot%202026-08-20%20105204.png)
 
-**Description:** Briefly explain what functionality is demonstrated here.
+**Description:** Shows all of the published and to-be published news articles.
 
-## 📂 Project Structure
+
+#### [Edit news article]
+
+![Screenshot](https://github.com/TechWithPurpose/confucius-website/blob/65d8b6a5fd664ee5d112a1031ae20668701d777b/screenshots/Screenshot%202026-08-20%20105228.png)
+
+**Description:** Allows changes to be made on an already published or drafted article.
+
+]## 📂 Project Structure
 
 ```text
-ConfuciusClassroom/
+ConfuciusWebsite/
 │
+├── Areas/
 ├── Controllers/
+├── Data/
 ├── Models/
+├── Properties/
+├── Services/
+├── ViewModels/
 ├── Views/
 ├── wwwroot/
+├── ConfuciusWebsite.csproj
+├── Program.cs
+├── appsettings.Development.json
+├── appsettings.json
 │
-├── Data/
-├── Services/
-├── [Other folders]
-│
-└── README.md
+docs/
+screenshots/
+.gitignore
+ConfuciusWebsite.sln
+PROJECT-NOTES
+README.md
 ```
-
-> Update this structure to reflect the actual organization of the repository.
 
 ## 🚀 Getting Started
 
@@ -181,7 +193,7 @@ ConfuciusClassroom/
 
 To run the project locally, you will need:
 
-* [.NET version]
+* [.NET 8.0]
 * Microsoft SQL Server
 * SQL Server Management Studio (optional)
 * Visual Studio / Visual Studio Code
@@ -202,17 +214,25 @@ git clone [repository-url]
 appsettings.json
 ```
 
-4. Create or restore the database using:
+4. Run the application.
 
-```text
-[Instructions for database setup]
-```
+5. Admin Demo
+The project includes a functional administration area.
 
-5. Run the application.
+**Admin URL:**
+
+`/Admin/Admin/Dashboard`
+
+**Demo credentials:**
+
+| Field | Value |
+|---|---|
+| Email | `admin@example.com` |
+| Password | `Admin123!` |
+
+> These are demonstration credentials for the local development version of the project and do not provide access to any production system or external service.
 
 ## ⚠️ Project Status
-
-**This project is incomplete and is no longer actively developed.**
 
 Development was discontinued because the scope of the project gradually became significantly larger and more complex than originally anticipated.
 
@@ -229,17 +249,6 @@ The project demonstrates experience with:
 * CRUD operations and administrative functionality.
 * Designing and developing a larger multi-component application.
 
-## 🔮 Planned but Unimplemented Features
-
-The following functionality was originally planned but was not completed:
-
-* [Feature]
-* [Feature]
-* [Feature]
-* [Feature]
-
-These features remain documented through the project's user stories and wireframes.
-
 ## 📚 Documentation
 
 The following project documentation is included in this repository:
@@ -248,7 +257,6 @@ The following project documentation is included in this repository:
 * 🎨 Wireframes
 * 🗄️ Database Schema
 * 📸 Application Screenshots
-* [Any additional documentation]
 
 ## 🧠 What I Learned
 
@@ -263,12 +271,6 @@ Some of the main lessons from this project include:
 * Applying the MVC architectural pattern in a real project.
 * The challenges involved in maintaining consistency between requirements, database design, and application logic.
 
-Although the project was not completed, it represents an important part of my learning process and demonstrates my experience working on a larger software project from concept to partial implementation.
-
 ## 👤 Author
 
-**[Your Name]**
-
-[GitHub Profile](your-profile-link)
-
-[LinkedIn, if applicable]
+**Nuray Salim**
